@@ -2,44 +2,50 @@
 
 An end-to-end Python data pipeline designed to programmatically extract, normalize, cache, and analyze structured bibliographical data from live web sources. 
 
-Instead of relying on pre-packaged static datasets, this project showcases a professional **6-Stage Data Science Lifecycle** moving from raw web scraping and live API integration to deep Exploratory Data Analysis (EDA) and data visualization.
+Instead of relying on pre-packaged static datasets, this project showcases a professional **End-to-End Data Lifecycle** moving from raw web scraping and live API integration to Predictive Machine Learning modeling and data visualization.
 
 ---
 
-### 🏗️ The 6-Stage Data Science Framework
+### 🏗️ The Enhanced Data Science Framework
 
 #### 1. Define the Problem
-* **Objective:** Analyze Stephen King’s 50-year career trajectory (1974–2024), tracking book lengths, publication velocity, and publisher ecosystem dynamics.
+* **Objective:** Analyze Stephen King’s 50-year career trajectory (1974–2024), tracking book lengths, publication velocity, and publisher ecosystem dynamics to predict future publication lengths.
 
 #### 2. Data Acquisition & Ingestion
 * **Pipelines:** Extracted semi-structured records from a live REST API (`requests`) and parsed unstructured web layouts via `BeautifulSoup` (`lxml`).
 * **Lineage:** Implemented local raw file caching (`raw_data/`) to protect source servers and ensure reproducibility.
 
 #### 3. Data Cleaning & Preprocessing
-* **Normalisation:** Flattened nested JSON structures using `pd.json_normalize()`.
-* **Integrity:** Cast text objects (`Pages`, `Year`) into integers (`int64`), imputed missing fields, and removed duplicate records.
+* **Normalization:** Unpacked and flattened deeply nested JSON dictionary structures using `pd.json_normalize()`.
+* **Integrity:** Cast text objects (`Pages`, `Year`) into integers (`int64`), imputed missing fields, and removed duplicate records based on unique key constraints.
 
-#### 4. Exploratory Data Analysis (EDA)
+#### 4. Exploratory Data Analysis (EDA) & Feature Engineering
 * **Profiling:** Used descriptive statistics (`.describe()`) to extract mathematical spreads and identify extreme volume outliers.
-* **Feature Engineering:** Programmatically binned publication years into distinct historical career decades (e.g., `1970s`, `1980s`).
+* **Transformations:** Binned publication years into historical career decades and engineered text-based categorical vectors using One-Hot Encoding (`drop_first=True`) to prepare data matrices for machine learning algorithms.
 
-#### 5. Data Visualization & Storytelling
+#### 5. Predictive Modeling Engine (Machine Learning Stage)
+* **Model Selection:** Deployed an ensemble **Random Forest Regressor** configured with 100 decision tree estimators to forecast book lengths based on publishing house patterns and historical timelines. *(Note: System architecture is modularly designed to easily swap or benchmark against **Gradient Boosting / XGBoost** models for tabular optimization).*
+* **Evaluation:** Split data matrix into a rigorous 80/20 train/test split with a fixed seed (`random_state=42`) to guarantee experiment reproducibility. Performance was quantified on blind validation targets utilizing Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE).
+
+#### 6. Data Visualization & Storytelling
 * **Visuals:** Built publication-ready charts using `matplotlib` and `seaborn`.
 * **Plots:** Plotted publication frequency via line charts, tracked novel length evolution using regression scatter plots, and mapped publisher market share with horizontal bar charts.
 
-#### 6. Interpretation & Insights
+#### 7. Interpretation & Insights
 * **Conclusions:** Quantified a prolific consistency averaging over 1.2 books per year, visually verified style evolutions toward larger page counts, and exposed dominant corporate publisher alignment.
+
 ---
+
 ## 🛠️ Tech Stack & Dependencies
 
 * **Core Language & Runtime:** `Python 3.10+`
-* **Data Engineering & Analysis:** `pandas` (DataFrames, vectorization), `numpy` (numerical operations)
+* **Machine Learning & Modeling:** `scikit-learn` (Random Forest, Regressors, Model Selection Metrics)
+* **Data Engineering & Analysis:** `pandas` (DataFrames, JSON normalization, vectorization), `numpy` (numerical operations)
 * **Web Scraping & Connectivity:** `requests` (HTTP client), `beautifulsoup4` (HTML parsing), `lxml` (high-performance XML/HTML tree processing)
 * **Data Visualization & Analytics:** `matplotlib` (base plotting engine), `seaborn` (statistical visualizations)
-* **Data Quality & Validation (Optional):** `pydantic` or `great_expectations` (schema validation)
 * **Storage & Serialization:** `csv`, `json` (native serialization file formats)
-* **Environment & Package Management:** `pip` / `virtualenv` (or `conda`)
-* **Development Interface:** `Jupyter Notebook` / `VS Code`
+* **Environment Management:** `pip` / `virtualenv` (or `conda`)
+
 ---
 
 ## 📂 Repository Architecture
@@ -50,13 +56,12 @@ Instead of relying on pre-packaged static datasets, this project showcases a pro
 ├── 📁 raw_data/            # Local data staging (Raw cached .json and .html payloads)
 ├── 📁 cleaned_data/        # Pipeline destination (Final clean analytical data.csv)
 │
-├── 📄 requests_data.ipynb  # Comprehensive Jupyter Notebook housing code execution
-└── 📄 README.md            # Project architecture and analytical summary
+├── 📄 pipeline.py          # Production Script: The automated end-to-end ETL & Data Ingestion engine
+├── 📄 train_model.py       # Production Script: Machine learning training and evaluation execution
+├── 📄 requests_data.ipynb  # Interactive workspace housing exploratory analysis and visual rendering
+└── 📄 README.md            # Project architecture and analytical summary─ 📄 README.md            # Project architecture and analytical summary
 
 ```
-Extracted Dataset Schema
-The final engineered dataset outputs a structured matrix containing 63 unique book records with the following technical metadata:
-
 ## 📊 Extracted Dataset Schema
 
 The final cleaned dataset contains 63 unique book records structured according to the following relational schema:
@@ -95,48 +100,35 @@ To run this project locally, your environment needs to have Python installed alo
 The core dependencies are split into three modules:
 * **Networking & Parsing:** `requests`, `beautifulsoup4`, `lxml`
 * **Data Processing:** `pandas`, `numpy`
-* **Data Visualization:** `matplotlib`, `seaborn`
+* **Data Visualization:** `matplotlib`, `seaborn`, `scikit-learn notebook`
 
 ---
 
-## 🚀 Step-by-Step Local Installation
+## 🚀 Running the Production Pipeline
 
 Follow these terminal commands to set up the environment on your machine:
 
-### Step 1: Clone the Repository
-Clone the project directory from GitHub to your local storage:
-```bash
-git clone [https://github.com/YOUR_USERNAME/book-data-extractor.git](https://github.com/YOUR_USERNAME/book-data-extractor.git)
-cd book-data-extractor
+### Step 1: Run the ETL Pipeline Script
 ```
-
-### Step 2: Set Up a Isolated Virtual Environment 
-Creating a virtual environment ensures that the project dependencies do not conflict with your global Python system packages.
-➡️ On Windows:
-```python -m venv venv
-.\venv\Scripts\activate
+python pipeline.py
 ```
-➡️ On macOS/Linux:
-```python3 -m venv venv
-source venv/bin/activate
+### Step 2: Execute the Machine Learning Layer 
+Train your Random Forest Regressor and evaluate predictive metrics on your clean dataset:
+```
+python train_model.py
 ````
-### Step 3: Install Dependencies
-```
-pip install requests beautifulsoup4 lxml pandas numpy matplotlib seaborn notebook
-```
-### 🏃‍♂️ How to Run the Project
-1.Ensure your virtual environment is activated.
+### Step 3: Interactive Workspace
+To view the full visual data discovery process and plot historical graphs step-by-step:
 ```
 jupyter notebook
 ```
+Open requests_data.ipynb from the browser dashboard and run cells sequentially.
 
-Open `requests_data.ipynb` from the dashboard and run the cells sequentially (`Shift + Enter`) to fetch live data and generate the analytical charts.
-
-
+***
 
 ## ⚫ Authors & Credits
 
-* **Priyanshu Vijay** - *Data Engineer & Analyst* - [Your GitHub Profile](https://github.com/Butkii025)
+* **Priyanshu Vijay** - *Data Engineer & ML Analyst* - [Butkii025](https://github.com/Butkii025)
 
 ### 📄 License & Attribution
 The data pipeline code is licensed under the MIT License. If you use the cleaned dataset (`data.csv`) generated by this repository for further machine learning or statistical analysis, please attribute it as follows:
