@@ -74,15 +74,13 @@ The final cleaned dataset contains 63 unique book records structured according t
 
 ## Visual Insights Gallery
 
-### 1. Evolution of Book Length Over Time
-This chart tracks individual works as distributed points to visually illustrate long-term narrative structural growth across decades.
+These chart tracks individual annual book release counts to illustrate continuous narrative output and publishing frequency shifts across a 50-year timeline.
 
-(Tip: Save your scatter plot image from your notebook and link it here!)
-
-### 2. Publisher Dominance Distribution
-A ranked distribution illustrating which corporate stakeholders hold the dominant market share of the author's lifelong literary portfolio.
-
-(Tip: Save your horizontal bar chart image from your notebook and link it here!)
+<p align="center"> More extracted graphs ➡️
+  <img src="Extracted-graphs" alt="graphs" width="850"/>
+</p>
+<br><br>
+  <img width="2000" height="1000" alt="book_length_evolution" src="https://github.com/user-attachments/assets/0c4e6503-8514-42ed-b532-1b026d95b473" />
 
 ***
 ## ⚙️ Prerequisites & Local Setup
