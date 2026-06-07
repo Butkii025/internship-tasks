@@ -85,7 +85,21 @@ These chart tracks individual annual book release counts to illustrate continuou
   <img src="Extracted-graphs" alt="graphs" width="850"/>
 </p>
 <br><br>
-  <img width="2000" height="1000" alt="book_length_evolution" src="https://github.com/user-attachments/assets/0c4e6503-8514-42ed-b532-1b026d95b473" />
+  <img width="600" height="400" alt="book_length_evolution" src="https://github.com/user-attachments/assets/0c4e6503-8514-42ed-b532-1b026d95b473" />
+
+***
+## Flowchart
+```mermaid
+graph LR
+    A[🌐 Web Sources / REST API] -->|pipeline.py| B(📄 retrieve_data.json)
+    B -->|train_model.py| C{🛠️ Feature Engineering}
+    C -->|Aggregation & OHE| D[📐 X, y Matrices]
+    D -->|80/20 Matrix Split| E[🧠 Tuned Random Forest]
+    E -->|Model Evaluation| F[🏁 Diagnostics]
+    E -->|joblib.dump| G(💾 Serialized Artifacts: .pkl)
+    G -->|joblib.load| H[🔮 predict.py: Live Inference]
+```
+
 
 ***
 ## ⚙️ Prerequisites & Local Setup
